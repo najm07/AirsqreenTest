@@ -25,10 +25,12 @@ namespace Airsqreen.Controllers
             con.ConnectionString = "data source=DESKTOP-J6J2EQI\\SQLEXPRESS01; database=Airsqreen; integrated security = SSPI;";
         }
 
+        [HttpPost]
         public ActionResult Verify(Account acc)
         {
             ConnectionString();
             con.Open();
+            String view = "";
 
             cmd.Connection = con;
             cmd.CommandText = "select * from accounts where username='" + acc.Username + "' and password='" + acc.Password + "'";
@@ -37,14 +39,15 @@ namespace Airsqreen.Controllers
 
             if (dr.Read())
             {
-                con.Close();
-                return View();
+                view = "Dashboard";
             }
             else
             {
-                con.Close();
-                return View();
+                view = "";
             }
+
+            con.Close();
+            return View(view);
         }
     }
 }
